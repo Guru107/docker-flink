@@ -7,7 +7,7 @@
 #  "License"); you may not use this file except in compliance
 #  with the License.  You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#	  http://www.apache.org/licenses/LICENSE-2.0
 #
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,20 +23,20 @@ RUN apk add --no-cache bash snappy 'su-exec>=0.2'
 
 # Configure Flink version
 ENV FLINK_VERSION=%%FLINK_VERSION%% \
-    HADOOP_VERSION=%%HADOOP_VERSION%% \
-    SCALA_VERSION=%%SCALA_VERSION%%
+	HADOOP_VERSION=%%HADOOP_VERSION%% \
+	SCALA_VERSION=%%SCALA_VERSION%%
 
 # Prepare environment
 ENV FLINK_HOME=/opt/flink
 ENV PATH=$FLINK_HOME/bin:$PATH
 RUN addgroup -S -g 9999 flink && \
-    adduser -D -S -H -u 9999 -G flink -h $FLINK_HOME flink
+	adduser -D -S -H -u 9999 -G flink -h $FLINK_HOME flink
 WORKDIR $FLINK_HOME
 
 ENV FLINK_URL_FILE_PATH=flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-hadoop${HADOOP_VERSION}-scala_${SCALA_VERSION}.tgz
 # Not all mirrors have the .asc files
 ENV FLINK_TGZ_URL=https://www.apache.org/dyn/closer.cgi?action=download&filename=${FLINK_URL_FILE_PATH} \
-    FLINK_ASC_URL=https://www.apache.org/dist/${FLINK_URL_FILE_PATH}.asc
+	FLINK_ASC_URL=https://www.apache.org/dist/${FLINK_URL_FILE_PATH}.asc
 
 # For GPG verification instead of relying on key servers
 COPY KEYS /KEYS
@@ -44,10 +44,11 @@ COPY KEYS /KEYS
 # Install Flink
 RUN set -ex; \
   apk add --no-cache --virtual .build-deps \
-    ca-certificates \
-    gnupg \
-    openssl \
-    tar \
+	ca-certificates \
+	gnupg \
+	openssl \
+	openssh \
+	tar \
   ; \
   \
   wget -nv -O flink.tgz "$FLINK_TGZ_URL"; \
